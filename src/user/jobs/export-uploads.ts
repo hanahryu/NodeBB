@@ -44,9 +44,15 @@ process.on('message', async (msg: msg) => {
             zlib: { level: 9 }, // Sets the compression level.
         });
 
+        interface err {
+            code: string;
+            path: string;
+            message: string;
+        }
+
         // The next line calls a function in a module that has not been updated to TS yet
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-        archive.on('warning', (err) => {
+        archive.on('warning', (err: err) => {
             switch (err.code) {
             case 'ENOENT':
                 winston.warn(`[user/export/uploads] File not found: ${err.path}`);
@@ -58,16 +64,24 @@ process.on('message', async (msg: msg) => {
             }
         });
 
-        archive.on('error', (err) => {
-            const trimPath = function (path) {
+        // The next line calls a function in a module that has not been updated to TS yet
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+        archive.on('error', (err: err) => {
+            const trimPath = function (path: string) {
+                // The next line calls a function in a module that has not been updated to TS yet
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call
                 return path.replace(rootDirectory, '');
             };
             switch (err.code) {
             case 'EACCES':
+                // The next line calls a function in a module that has not been updated to TS yet
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call
                 winston.error(`[user/export/uploads] File inaccessible: ${trimPath(err.path)}`);
                 break;
 
             default:
+                // The next line calls a function in a module that has not been updated to TS yet
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call
                 winston.error(`[user/export/uploads] Unable to construct archive: ${err.message}`);
                 break;
             }
@@ -91,17 +105,17 @@ process.on('message', async (msg: msg) => {
 
         // The next line calls a function in a module that has not been updated to TS yet
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-        const uploadedPicture = await user.getUserField(targetUid, 'uploadedpicture');
+        const uploadedPicture: string = await user.getUserField(targetUid, 'uploadedpicture') as string;
         if (uploadedPicture) {
             // The next line calls a function in a module that has not been updated to TS yet
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-            const filePath = uploadedPicture.replace(nconf.get('upload_url'), '');
+            const filePath: string = uploadedPicture.replace(nconf.get('upload_url') as string, '');
             // The next line calls a function in a module that has not been updated to TS yet
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-            archive.file(path.join(nconf.get('upload_path') as string, filePath as string), {
+            archive.file(path.join(nconf.get('upload_path') as string, filePath), {
                 // The next line calls a function in a module that has not been updated to TS yet
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call
-                name: path.basename(filePath as string),
+                name: path.basename(filePath),
             });
         }
 

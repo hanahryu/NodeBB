@@ -57,15 +57,23 @@ process.on('message', (msg) => __awaiter(void 0, void 0, void 0, function* () {
                     break;
             }
         });
+        // The next line calls a function in a module that has not been updated to TS yet
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
         archive.on('error', (err) => {
             const trimPath = function (path) {
+                // The next line calls a function in a module that has not been updated to TS yet
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call
                 return path.replace(rootDirectory, '');
             };
             switch (err.code) {
                 case 'EACCES':
+                    // The next line calls a function in a module that has not been updated to TS yet
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call
                     winston_1.default.error(`[user/export/uploads] File inaccessible: ${trimPath(err.path)}`);
                     break;
                 default:
+                    // The next line calls a function in a module that has not been updated to TS yet
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call
                     winston_1.default.error(`[user/export/uploads] Unable to construct archive: ${err.message}`);
                     break;
             }
